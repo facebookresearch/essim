@@ -1,0 +1,60 @@
+diff --git a/configure b/configure
+index 04bb9fe9dd..47d3eb3b7a 100755
+--- a/configure
++++ b/configure
+@@ -231,6 +231,7 @@ External library support:
+   --enable-libdavs2        enable AVS2 decoding via libdavs2 [no]
+   --enable-libdc1394       enable IIDC-1394 grabbing using libdc1394
+                            and libraw1394 [no]
++  --enable-libessim        enable eSSIM filter via libessim [no]
+   --enable-libfdk-aac      enable AAC de/encoding via libfdk-aac [no]
+   --enable-libflite        enable flite (voice synthesis) support via libflite [no]
+   --enable-libfontconfig   enable libfontconfig, useful for drawtext filter [no]
+@@ -1856,6 +1857,7 @@ EXTERNAL_LIBRARY_LIST="
+     libdav1d
+     libdc1394
+     libdrm
++    libessim
+     libflite
+     libfontconfig
+     libfreetype
+@@ -3735,6 +3737,7 @@ drawtext_filter_suggest="libfontconfig libfribidi"
+ elbg_filter_deps="avcodec"
+ eq_filter_deps="gpl"
+ erosion_opencl_filter_deps="opencl"
++essim_filter_deps="libessim"
+ find_rect_filter_deps="avcodec avformat gpl"
+ flip_vulkan_filter_deps="vulkan spirv_compiler"
+ flite_filter_deps="libflite threads"
+@@ -6693,6 +6696,7 @@ enabled libdav1d          && require_pkg_config libdav1d "dav1d >= 0.5.0" "dav1d
+ enabled libdavs2          && require_pkg_config libdavs2 "davs2 >= 1.6.0" davs2.h davs2_decoder_open
+ enabled libdc1394         && require_pkg_config libdc1394 libdc1394-2 dc1394/dc1394.h dc1394_new
+ enabled libdrm            && require_pkg_config libdrm libdrm xf86drm.h drmGetVersion
++enabled libessim          && require_pkg_config libessim "essim" "essim.h" ssim_compute_ctx
+ enabled libfdk_aac        && { check_pkg_config libfdk_aac fdk-aac "fdk-aac/aacenc_lib.h" aacEncOpen ||
+                                { require libfdk_aac fdk-aac/aacenc_lib.h aacEncOpen -lfdk-aac &&
+                                  warn "using libfdk without pkg-config"; } }
+diff --git a/libavfilter/Makefile b/libavfilter/Makefile
+index 2fe0033b21..78551e5322 100644
+--- a/libavfilter/Makefile
++++ b/libavfilter/Makefile
+@@ -299,6 +299,7 @@ OBJS-$(CONFIG_EQ_FILTER)                     += vf_eq.o
+ OBJS-$(CONFIG_EROSION_FILTER)                += vf_neighbor.o
+ OBJS-$(CONFIG_EROSION_OPENCL_FILTER)         += vf_neighbor_opencl.o opencl.o \
+                                                 opencl/neighbor.o
++OBJS-$(CONFIG_ESSIM_FILTER)                  += vf_essim.o framesync.o
+ OBJS-$(CONFIG_ESTDIF_FILTER)                 += vf_estdif.o
+ OBJS-$(CONFIG_EXPOSURE_FILTER)               += vf_exposure.o
+ OBJS-$(CONFIG_EXTRACTPLANES_FILTER)          += vf_extractplanes.o
+diff --git a/libavfilter/allfilters.c b/libavfilter/allfilters.c
+index d4184d6e80..667b7c20bd 100644
+--- a/libavfilter/allfilters.c
++++ b/libavfilter/allfilters.c
+@@ -274,6 +274,7 @@ extern const AVFilter ff_vf_epx;
+ extern const AVFilter ff_vf_eq;
+ extern const AVFilter ff_vf_erosion;
+ extern const AVFilter ff_vf_erosion_opencl;
++extern const AVFilter ff_vf_essim;
+ extern const AVFilter ff_vf_estdif;
+ extern const AVFilter ff_vf_exposure;
+ extern const AVFilter ff_vf_extractplanes;
