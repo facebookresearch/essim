@@ -69,6 +69,13 @@ if(BUILD_TESTS)
   gtest_discover_tests(tests)
 endif()
 
+add_executable(essim_app
+  app/essim_app.cpp
+)
+target_link_libraries(essim_app essim)
+target_include_directories(essim_app PUBLIC essim)
+set_property(TARGET essim_app PROPERTY OUTPUT_NAME essim)
+
 configure_file(essim.pc.in essim.pc @ONLY)
 
 # build settings :  make release, make debug
