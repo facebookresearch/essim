@@ -138,16 +138,20 @@ int main(int argc, char **argv) {
 
   /*Get yuv name from recon path, so we can generate csv file,
     based on that name*/
-  char *ptrYuvName;
-  char temp[ReconYuvPath.length() + 1];
+  size_t pos = ReconYuvPath.find_last_of("/\\");
   std::string YuvFileName;
-  strcpy(temp, ReconYuvPath.c_str());
-  ptrYuvName = strtok(temp, " /");
-  while (ptrYuvName != NULL) {
-    YuvFileName = ptrYuvName;
-    ptrYuvName = strtok(NULL, "/");
+
+  if (pos != std::string::npos) {
+      // Extract the substring after the last '/' or '\'
+      YuvFileName = ReconYuvPath.substr(pos + 1);
+  } else {
+      YuvFileName = ReconYuvPath;
   }
-  YuvFileName.resize(YuvFileName.size() - 4);
+
+  // Remove the last 4 characters (assuming it's an extension)
+  if (YuvFileName.size() >= 4) {
+      YuvFileName.resize(YuvFileName.size() - 4);
+  }
 
   std::unique_ptr<std::ostream, void (*)(std::ostream *)> outStream(
       nullptr, [](std::ostream *) { /* do nothing */ });
