@@ -235,9 +235,9 @@ ssim_allocate_ctx_array(const size_t numCtx, const uint32_t width,
     if(windowStride==4)
       printf("\nWARNING : eSSIM precision will be very low\n");
   }
-  eSSIMMode mode = SSIM_MODE_PERF_INT;
+  eSSIMMode mode = SSIM_MODE_INT;
   if(bitDepthMinus8 > 2) {
-    mode = SSIM_MODE_PERF_FLOAT;
+    mode = SSIM_MODE_PERF;
     printf("\nWARNING : Bit-depth > 10 only eSSIM Float is supported\n");
   } else {
     mode = eSSIMmode;
@@ -267,54 +267,64 @@ ssim_allocate_ctx_array(const size_t numCtx, const uint32_t width,
     if (SSIM_DATA_8BIT == dataType) {
       p->params.load_4x4_windows_proc = load_4x4_windows_8u;
       if ((8 == windowSize) && (4 == windowStride)) {
-        p->params.sum_windows_proc = (SSIM_MODE_PERF_INT == mode)
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                          ? (sum_windows_8x4_int_8u)
                                          : (sum_windows_8x4_float_8u);
 #if NEW_SIMD_FUNC
       } else if ((8 == windowSize) && (8 == windowStride)) {
-        p->params.sum_windows_proc = (SSIM_MODE_PERF_INT == mode)
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                          ? (sum_windows_8x8_int_8u)
-                                         : (sum_windows_float_8u);
+                                         : (sum_windows_8x8_float_8u);
       } else if ((16 == windowSize) && (4 == windowStride)) {
-        p->params.sum_windows_proc = (SSIM_MODE_PERF_INT == mode)
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                          ? (sum_windows_16x4_int_8u)
-                                         : (sum_windows_float_8u);
+                                         : (sum_windows_16x4_float_8u);
       } else if ((16 == windowSize) && (8 == windowStride)) {
-        p->params.sum_windows_proc = (SSIM_MODE_PERF_INT == mode)
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                          ? (sum_windows_16x8_int_8u)
-                                         : (sum_windows_float_8u);
+                                         : (sum_windows_16x8_float_8u);
       } else if ((16 == windowSize) && (16 == windowStride)) {
-        p->params.sum_windows_proc = (SSIM_MODE_PERF_INT == mode)
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                          ? (sum_windows_16x16_int_8u)
-                                         : (sum_windows_float_8u);
+                                         : (sum_windows_16x16_float_8u);
 #endif
       } else if ((12 == windowSize) && (4 == windowStride)) {
-        p->params.sum_windows_proc = (SSIM_MODE_PERF_INT == mode)
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                          ? (sum_windows_12x4_int_8u)
                                          : (sum_windows_12x4_float_8u);
       } else {
-        p->params.sum_windows_proc = (SSIM_MODE_PERF_INT == mode)
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                          ? (sum_windows_int_8u)
                                          : (sum_windows_float_8u);
       }
 #if NEW_SIMD_FUNC
-    } else if ((bitDepthMinus8 == 2) && (SSIM_MODE_PERF_INT == mode)) {
+    } else if (bitDepthMinus8 == 2) {
       p->params.load_4x4_windows_proc = load_4x4_windows_10u;
       if ((8 == windowSize) && (4 == windowStride)) {
-        p->params.sum_windows_proc = sum_windows_8x4_int_10u;
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
+                                         ? (sum_windows_8x4_int_10u)
+                                         : (sum_windows_8x4_float_10u);
       } else if ((8 == windowSize) && (8 == windowStride)) {
-        p->params.sum_windows_proc = sum_windows_8x8_int_10u;
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
+                                         ? (sum_windows_8x8_int_10u)
+                                         : (sum_windows_8x8_float_10u);
       } else if ((16 == windowSize) && (4 == windowStride)) {
-        p->params.sum_windows_proc = sum_windows_16x4_int_10u;
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
+                                         ? (sum_windows_16x4_int_10u)
+                                         : (sum_windows_16x4_float_10u);
       } else if ((16 == windowSize) && (8 == windowStride)) {
-        p->params.sum_windows_proc = sum_windows_16x8_int_10u;
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
+                                         ? (sum_windows_16x8_int_10u)
+                                         : (sum_windows_16x8_float_10u);
       } else if ((16 == windowSize) && (16 == windowStride)) {
-        p->params.sum_windows_proc = sum_windows_16x16_int_10u;
+        p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
+                                         ? (sum_windows_16x16_int_10u)
+                                         : (sum_windows_16x16_float_10u);
       }
 #endif
     } else {
     p->params.load_4x4_windows_proc = load_4x4_windows_16u;
-    p->params.sum_windows_proc = (SSIM_MODE_PERF_INT == mode)
+    p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                        ? (sum_windows_int_16u)
                                        : (sum_windows_float_16u);
     }
@@ -347,7 +357,7 @@ ssim_allocate_ctx_array(const size_t numCtx, const uint32_t width,
 
   const uint64_t MAX_SSIM_ACCUMULATED_SUM_VALUE
                  = essim_mink_value == 4 ? 18446744073709551615U : (uint64_t)1 << 63;
-  if(mode != SSIM_MODE_PERF_FLOAT) {
+  if(mode != SSIM_MODE_PERF) {
     /*generating LUT to avoid final stage division in cal window for ssim_val*/
     div_lookup_ptr = div_lookup_generator();
     uint32_t numWindows = GetTotalWindows(width, height, windowSize, windowStride);
@@ -453,7 +463,7 @@ eSSIMResult ssim_aggregate_score(float *const pSsimScore,
     return SSIM_ERR_NULL_PTR;
   }
 
-  if (SSIM_MODE_PERF_FLOAT == ctxa->params.mode) {
+  if (SSIM_MODE_PERF == ctxa->params.mode) {
     double ssim_sum = 0.0f;
     double ssim_mink_sum = 0.0f;
     size_t numWindows = 0;

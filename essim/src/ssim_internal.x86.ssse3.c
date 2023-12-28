@@ -582,4 +582,103 @@ void sum_windows_12x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS) {
 
 } /* void sum_windows_12x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS) */
 
+#if NEW_SIMD_FUNC
+
+#define ASM_LOAD_16X16_WINDOW_8_FLOAT_VALUES_SSSE3(value0, value1, idx)        \
+  {                                                                            \
+    __m128i _r0, _r1;                                                          \
+    _r0 = _mm_loadu_si128((const __m128i *)(pSrc + (idx)*srcStride));          \
+    _r1 = _mm_loadu_si32(pSrc + (idx)*srcStride + 16);                         \
+    _r0 = _mm_add_epi16(                                                       \
+        _r0, _mm_loadu_si128((const __m128i *)(pSrc + (idx + 4)*srcStride)));  \
+    _r1 = _mm_add_epi16(_r1, _mm_loadu_si32(pSrc + (idx + 4)*srcStride + 16)); \
+    _r1 = _mm_alignr_epi8(_r1, _r0, 8);                                        \
+    _r0 = _mm_shuffle_epi8(_r0, c_sum_shuffle_pattern);                        \
+    _r1 = _mm_shuffle_epi8(_r1, c_sum_shuffle_pattern);                        \
+    _r0 = _mm_hadd_epi16(_r0, _r1);                                            \
+    _r1 = _mm_srli_epi32(_r0, 16);                                             \
+    _r0 = _mm_srli_epi32(_mm_slli_epi32(_r0, 16), 16);                         \
+    value0 = _mm_add_ps(value0, _mm_cvtepi32_ps(_r0));                         \
+    value1 = _mm_add_ps(value1, _mm_cvtepi32_ps(_r1));                         \
+  }
+
+#define ASM_LOAD_16X16_WINDOW_4_FLOAT_VALUES_SSSE3(value, idx)                 \
+  {                                                                            \
+    __m128i _r0, _r1;                                                          \
+    _r0 = _mm_loadu_si128((const __m128i *)(pSrc + (idx)*srcStride));          \
+    _r1 = _mm_loadu_si32(pSrc + (idx)*srcStride + 16);                         \
+    _r0 = _mm_add_epi32(                                                       \
+        _r0, _mm_loadu_si128((const __m128i *)(pSrc + (idx + 4)*srcStride)));  \
+    _r1 = _mm_add_epi32(_r1, _mm_loadu_si32(pSrc + (idx + 4)*srcStride + 16)); \
+    _r1 = _mm_alignr_epi8(_r1, _r0, 8);                                        \
+    _r0 = _mm_shuffle_epi32(_r0, 0x94);                                        \
+    _r1 = _mm_shuffle_epi32(_r1, 0x94);                                        \
+    _r0 = _mm_hadd_epi32(_r0, _r1);                                            \
+    value = _mm_add_ps(value, _mm_mul_ps(                                      \
+                              _mm_cvtepi32_ps(_r0), invWindowSize_sqd));       \
+  }
+
+void sum_windows_16x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS) {
+  enum { WIN_CHUNK = 4, WIN_SIZE = 16 };
+  const __m128i c_sum_shuffle_pattern =
+      _mm_loadu_si128((const __m128i *)sum_8x8_shuffle);
+  const __m128 invWindowSize_sqd =
+      _mm_set1_ps(1.0f / (float)(windowSize * windowSize));
+  const __m128 invWindowSize_qd =
+      _mm_mul_ps(invWindowSize_sqd, invWindowSize_sqd);
+  const float fC1 = get_ssim_float_constant(1, bitDepthMinus8);
+  const float fC2 = get_ssim_float_constant(2, bitDepthMinus8);
+  const __m128 C1 = _mm_set1_ps(fC1);
+  const __m128 C2 = _mm_set1_ps(fC2);
+  const __m128 halfC2 = _mm_set1_ps(fC2 / 2.0f);
+
+  __m128 ssim_mink_sum = _mm_setzero_ps();
+  __m128 ssim_sum = _mm_setzero_ps();
+  const uint8_t *pSrc = pBuf->p;
+  const ptrdiff_t srcStride = pBuf->stride;
+
+  size_t i = 0;
+  for (; i + WIN_CHUNK <= numWindows; i += WIN_CHUNK) {
+    __m128 ref_sum = _mm_setzero_ps();
+    __m128 cmp_sum = _mm_setzero_ps();
+    __m128 ref_sigma_sqd = _mm_setzero_ps();
+    __m128 cmp_sigma_sqd = _mm_setzero_ps();
+    __m128 sigma_both = _mm_setzero_ps();
+
+    for (uint32_t x = 0; x < 2; x++) {
+
+      ASM_LOAD_16X16_WINDOW_8_FLOAT_VALUES_SSSE3(ref_sum, cmp_sum, 0);
+      ASM_LOAD_16X16_WINDOW_4_FLOAT_VALUES_SSSE3(ref_sigma_sqd, 1);
+      ASM_LOAD_16X16_WINDOW_4_FLOAT_VALUES_SSSE3(cmp_sigma_sqd, 2);
+      ASM_LOAD_16X16_WINDOW_4_FLOAT_VALUES_SSSE3(sigma_both, 3);
+
+      ASM_LOAD_16X16_WINDOW_8_FLOAT_VALUES_SSSE3(ref_sum, cmp_sum, 8);
+      ASM_LOAD_16X16_WINDOW_4_FLOAT_VALUES_SSSE3(ref_sigma_sqd, 9);
+      ASM_LOAD_16X16_WINDOW_4_FLOAT_VALUES_SSSE3(cmp_sigma_sqd, 10);
+      ASM_LOAD_16X16_WINDOW_4_FLOAT_VALUES_SSSE3(sigma_both, 11);
+
+      pSrc += sizeof(uint32_t) * 2;
+    }
+    ASM_CALC_4_FLOAT_SSIM_SSE();
+  }
+
+  ssim_sum = _mm_hadd_ps(ssim_sum, ssim_mink_sum);
+  ssim_sum = _mm_hadd_ps(ssim_sum, ssim_sum);
+
+  res->ssim_sum_f += _mm_cvtss_f32(ssim_sum);
+  ssim_sum = _mm_shuffle_ps(ssim_sum, ssim_sum, 0x39);
+  res->ssim_mink_sum_f += _mm_cvtss_f32(ssim_sum);
+  res->numWindows += i;
+
+  if (i < numWindows) {
+    SSIM_4X4_WINDOW_BUFFER buf = {(uint8_t *)pSrc, srcStride};
+    sum_windows_16x4_float_8u_c(res, &buf, numWindows - i, windowSize,
+                               windowStride, bitDepthMinus8, NULL, 0, 0,
+                               essim_mink_value);
+  }
+
+} /* void sum_windows_16x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS) */
+
+#endif
+
 #endif /* defined(_X86) || defined(_X64) */

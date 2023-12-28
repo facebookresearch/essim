@@ -150,7 +150,7 @@ TEST(ssimTest, threading) {
         float ssimRef = 0;
         auto resRef = ssim_compute_8u(&ssimRef, &essimRef, pRef, refStride, pCmp,
                                       cmpStride, width, height, windowSize,
-                                      windowStride, 1, SSIM_MODE_PERF_INT,
+                                      windowStride, 1, SSIM_MODE_INT,
                                       SSIM_SPATIAL_POOLING_MINK,
                                       essim_mink_value);
         // call and test threaded versions
@@ -160,7 +160,7 @@ TEST(ssimTest, threading) {
           float essimTst = 0;
           auto resTst = ssim_compute_threaded(
               &ssimTst, &essimTst, pRef, refStride, pCmp, cmpStride, width, height,
-              bitDepthMinus8, windowSize, windowStride, 1, SSIM_MODE_PERF_INT,
+              bitDepthMinus8, windowSize, windowStride, 1, SSIM_MODE_INT,
               SSIM_SPATIAL_POOLING_MINK, numThreads);
           std::this_thread::sleep_for(std::chrono::milliseconds(10));
           ASSERT_EQ(resRef, resTst);
@@ -207,7 +207,7 @@ TEST(ssimTest, threading_10bit) {
         float essimRef = 0 ;
         auto resRef = ssim_compute_16u(
             &ssimRef, &essimRef, pRef, refStride, pCmp, cmpStride, width, height,
-            bitDepthMinus8, windowSize, windowStride, 1, SSIM_MODE_PERF_INT,
+            bitDepthMinus8, windowSize, windowStride, 1, SSIM_MODE_INT,
             SSIM_SPATIAL_POOLING_MINK, essim_mink_value);
         // call and test threaded versions
         for (uint32_t numThreads = 1; numThreads < MAX_NUM_THREADS;
@@ -216,7 +216,7 @@ TEST(ssimTest, threading_10bit) {
           float essimTst = 0;
           auto resTst = ssim_compute_threaded(
               &ssimTst, &essimTst, pRef, refStride, pCmp, cmpStride, width, height,
-              bitDepthMinus8, windowSize, windowStride, 1, SSIM_MODE_PERF_INT,
+              bitDepthMinus8, windowSize, windowStride, 1, SSIM_MODE_INT,
               SSIM_SPATIAL_POOLING_MINK, numThreads);
           std::this_thread::sleep_for(std::chrono::milliseconds(10));
           ASSERT_EQ(resRef, resTst);
@@ -277,7 +277,7 @@ TEST(ssimTest, threading) {
         float ssimRefInt = 0;
         auto resRefInt = ssim_compute_8u(
             &ssimRefInt, &essimRefInt, pRef, refStride, pCmp, cmpStride, width,
-            height, windowSize, windowStride, 1, SSIM_MODE_PERF_INT,
+            height, windowSize, windowStride, 1, SSIM_MODE_INT,
             SSIM_SPATIAL_POOLING_BOTH, essim_mink_value);
         std::cout << "ssimRef_Int : " << (float)ssimRefInt
                   << " essimRef_Int : " << (float)essimRefInt << std::endl;
@@ -295,7 +295,7 @@ TEST(ssimTest, threading) {
                     auto resRefFloat = ssim_compute_8u(
                         &ssimRefFloat, &essimRefFloat, pRef, refStride, pCmp,
                         cmpStride, width, height, windowSize, windowStride, 1,
-                        SSIM_MODE_PERF_FLOAT, SSIM_SPATIAL_POOLING_BOTH,
+             SSIM_MODE_PERF, SSIM_SPATIAL_POOLING_BOTH,
                         essim_mink_value);
                     std::cout << "ssimRefFloat : " << (float)ssimRefFloat <<  " essimRefFloat : "
                   << (float)essimRefFloat << std::endl;
@@ -311,7 +311,7 @@ TEST(ssimTest, threading) {
           float essimTst = 0;
           auto resTst = ssim_compute_threaded(
               &ssimTst, &essimTst, pRef, refStride, pCmp, cmpStride, width, height,
-              bitDepthMinus8, windowSize, windowStride, 1, SSIM_MODE_PERF_INT,
+              bitDepthMinus8, windowSize, windowStride, 1, SSIM_MODE_INT,
               SSIM_SPATIAL_POOLING_BOTH, numThreads);
           std::this_thread::sleep_for(std::chrono::milliseconds(10));
           ASSERT_EQ(resRefInt, resTst);
@@ -377,7 +377,7 @@ TEST(ssimTest, threading_10bit) {
         auto resRefInt = ssim_compute_16u(
             &ssimRefInt, &essimRefInt, pRef, refStride, pCmp, cmpStride, width,
             height, bitDepthMinus8, windowSize, windowStride, 1,
-            SSIM_MODE_PERF_INT, SSIM_SPATIAL_POOLING_BOTH, essim_mink_value);
+            SSIM_MODE_INT, SSIM_SPATIAL_POOLING_BOTH, essim_mink_value);
         std::cout << "ssimRef_Int : " << (float)ssimRefInt
                   << " essimRef_Int : " << (float)essimRefInt << std::endl;
 #if PROFILING_PRINTS
@@ -394,7 +394,7 @@ TEST(ssimTest, threading_10bit) {
         auto resRefFloat = ssim_compute_16u(
             &ssimRefFloat, &essimRefFloat, pRef, refStride, pCmp, cmpStride,
             width, height, bitDepthMinus8, windowSize, windowStride, 1,
-            SSIM_MODE_PERF_FLOAT, SSIM_SPATIAL_POOLING_BOTH, essim_mink_value);
+            SSIM_MODE_PERF, SSIM_SPATIAL_POOLING_BOTH, essim_mink_value);
         std::cout << "ssimRefFloat : " << (float)ssimRefFloat <<  " essimRefFloat : "
                   << (float)essimRefFloat << std::endl;
 #if PROFILING_PRINTS
@@ -409,7 +409,7 @@ TEST(ssimTest, threading_10bit) {
           float essimTst = 0;
           auto resTst = ssim_compute_threaded(
               &ssimTst, &essimTst, pRef, refStride, pCmp, cmpStride, width, height,
-              bitDepthMinus8, windowSize, windowStride, 1, SSIM_MODE_PERF_INT,
+              bitDepthMinus8, windowSize, windowStride, 1, SSIM_MODE_INT,
               SSIM_SPATIAL_POOLING_BOTH, numThreads);
           std::this_thread::sleep_for(std::chrono::milliseconds(10));
           ASSERT_EQ(resRefInt, resTst);

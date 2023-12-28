@@ -43,11 +43,11 @@ typedef enum eSSIMMode {
 
   /* performance integer implementation. the function is bit-exact as one in
      SSIM_MODE_REF, but it has a lot of optimizations. */
-  SSIM_MODE_PERF_INT = 1,
+  SSIM_MODE_INT = 1,
 
   /* performance float implementation. the functions has more optimization.
      results on different platforms may vary. */
-  SSIM_MODE_PERF_FLOAT = 2
+  SSIM_MODE_PERF = 2
 } eSSIMMode;
 
 typedef enum eSSIMFlags {

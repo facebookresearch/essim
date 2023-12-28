@@ -684,6 +684,42 @@ void sum_windows_12x4_float_8u_c(SUM_WINDOWS_FORMAL_ARGS) {
   sum_windows_float_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
 }
 
+void sum_windows_8x8_float_8u_c(SUM_WINDOWS_FORMAL_ARGS) {
+  sum_windows_float_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
+}
+
+void sum_windows_16x4_float_8u_c(SUM_WINDOWS_FORMAL_ARGS) {
+  sum_windows_float_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
+}
+
+void sum_windows_16x8_float_8u_c(SUM_WINDOWS_FORMAL_ARGS) {
+  sum_windows_float_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
+}
+
+void sum_windows_16x16_float_8u_c(SUM_WINDOWS_FORMAL_ARGS) {
+  sum_windows_float_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
+}
+
+void sum_windows_8x4_float_10u_c(SUM_WINDOWS_FORMAL_ARGS) {
+  sum_windows_float_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
+}
+
+void sum_windows_8x8_float_10u_c(SUM_WINDOWS_FORMAL_ARGS) {
+  sum_windows_float_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
+}
+
+void sum_windows_16x4_float_10u_c(SUM_WINDOWS_FORMAL_ARGS) {
+  sum_windows_float_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
+}
+
+void sum_windows_16x8_float_10u_c(SUM_WINDOWS_FORMAL_ARGS) {
+  sum_windows_float_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
+}
+
+void sum_windows_16x16_float_10u_c(SUM_WINDOWS_FORMAL_ARGS) {
+  sum_windows_float_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
+}
+
 void sum_windows_float_16u_c(SUM_WINDOWS_FORMAL_ARGS) {
   const uint32_t windowSizeDiv4 = windowSize / 4;
 

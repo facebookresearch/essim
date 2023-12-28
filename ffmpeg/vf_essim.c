@@ -71,10 +71,10 @@ typedef struct ESSIMContext {
 static const AVOption essim_options[] = {
     { "stats_file", "file where to store per-frame difference information", OFFSET(stats_file_str), AV_OPT_TYPE_STRING, {.str=NULL}, 0, 0, FLAGS },
 
-    { "mode",  "mode of operation to trade off between performance and cross-platform precision", OFFSET(mode), AV_OPT_TYPE_INT,   { .i64 = SSIM_MODE_PERF_INT }, 0, 2, FLAGS, "mode" },
+    { "mode",  "mode of operation to trade off between performance and cross-platform precision", OFFSET(mode), AV_OPT_TYPE_INT,   { .i64 = SSIM_MODE_PERF }, 0, 2, FLAGS, "mode" },
     { "ref",   "reference integer implementation with few optimizations",                         0,            AV_OPT_TYPE_CONST, { .i64 = SSIM_MODE_REF }, INT_MIN, INT_MAX, FLAGS, "mode" },
-    { "int",   "optimized integer implementation, bit-exact to reference",                        0,            AV_OPT_TYPE_CONST, { .i64 = SSIM_MODE_PERF_INT }, INT_MIN, INT_MAX, FLAGS, "mode" },
-    { "float", "optimized float implementation, not bit-exact to reference",                      0,            AV_OPT_TYPE_CONST, { .i64 = SSIM_MODE_PERF_FLOAT }, INT_MIN, INT_MAX, FLAGS, "mode" },
+    { "int",   "optimized integer implementation, bit-exact to reference",                        0,            AV_OPT_TYPE_CONST, { .i64 = SSIM_MODE_INT }, INT_MIN, INT_MAX, FLAGS, "mode" },
+    { "perf", "best performance mode, not bit-exact to reference",                      0,            AV_OPT_TYPE_CONST, { .i64 = SSIM_MODE_PERF }, INT_MIN, INT_MAX, FLAGS, "mode" },
 
     { "mink",  "minkowski pooling coefficient", OFFSET(essim_mink_value), AV_OPT_TYPE_INT,   { .i64 = 3 }, 3, 4, FLAGS },
 

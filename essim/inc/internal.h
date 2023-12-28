@@ -297,6 +297,17 @@ void sum_windows_8x8_int_10u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x4_int_10u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x8_int_10u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x16_int_10u(SUM_WINDOWS_FORMAL_ARGS);
+
+void sum_windows_8x8_float_8u(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x4_float_8u(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x8_float_8u(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x16_float_8u(SUM_WINDOWS_FORMAL_ARGS);
+
+void sum_windows_8x4_float_10u(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_8x8_float_10u(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x4_float_10u(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x8_float_10u(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x16_float_10u(SUM_WINDOWS_FORMAL_ARGS);
 #endif
 void sum_windows_float_8u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_8x4_float_8u(SUM_WINDOWS_FORMAL_ARGS);
@@ -331,6 +342,17 @@ void sum_windows_8x8_int_8u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x4_int_8u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x8_int_8u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x16_int_8u_c(SUM_WINDOWS_FORMAL_ARGS);
+
+void sum_windows_8x8_float_8u_c(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x4_float_8u_c(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x8_float_8u_c(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x16_float_8u_c(SUM_WINDOWS_FORMAL_ARGS);
+
+void sum_windows_8x4_float_10u_c(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_8x8_float_10u_c(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x4_float_10u_c(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x8_float_10u_c(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x16_float_10u_c(SUM_WINDOWS_FORMAL_ARGS);
 #endif
 void sum_windows_float_8u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_8x4_float_8u_c(SUM_WINDOWS_FORMAL_ARGS);
@@ -370,6 +392,18 @@ void sum_windows_16_int_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x4_int_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x8_int_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x16_int_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
+
+void sum_windows_8x8_float_8u_avx2(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x4_float_8u_avx2(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x8_float_8u_avx2(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x16_float_8u_avx2(SUM_WINDOWS_FORMAL_ARGS);
+
+void sum_windows_8x4_float_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_8x8_float_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x4_float_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x8_float_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x16_float_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
 #endif
 
 void sum_windows_8x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS);
@@ -400,6 +434,19 @@ void sum_windows_16_int_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x4_int_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x8_int_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x16_int_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
+
+void sum_windows_8x8_float_8u_neon(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16_float_8u_neon(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x4_float_8u_neon(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x8_float_8u_neon(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x16_float_8u_neon(SUM_WINDOWS_FORMAL_ARGS);
+
+void sum_windows_8x4_float_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_8x8_float_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16_float_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x4_float_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x8_float_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
+void sum_windows_16x16_float_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
 #endif
 
 #endif /* defined(_X86) || defined(_X64) */

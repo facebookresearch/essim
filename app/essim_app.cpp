@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
         if (Mode != 0 && Mode != 1 && Mode != 2) {
           Mode = 1;
           std::cerr << "Invalid mode. Using default eSSIMMode i.e 1 "
-                       "(SSIM_MODE_PERF_INT)"
+                       "(SSIM_MODE_PERF)"
                     << std::endl;
         }
       } else if (strcmp(argv[i], "-bd") == 0) {
@@ -111,9 +111,9 @@ int main(int argc, char **argv) {
   if (Mode == 0)
     ModeEnum = SSIM_MODE_REF;
   else if (Mode == 2)
-    ModeEnum = SSIM_MODE_PERF_FLOAT;
+    ModeEnum = SSIM_MODE_PERF;
   else
-    ModeEnum = SSIM_MODE_PERF_INT;
+    ModeEnum = SSIM_MODE_INT;
 
   uint32_t BitDepthMinus8 = BitDepth - 8;
 
