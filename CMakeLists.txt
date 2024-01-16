@@ -3,6 +3,26 @@ project(essim VERSION 0.0.1 DESCRIPTION "efficiently compute enhanced SSIM (eSSI
 set(CMAKE_CXX_STANDARD 17)
 include(GNUInstallDirs)
 
+include(CMakePrintHelpers)
+
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
+  set(ARCH "arm64")
+else()
+  set(ARCH "x86_64")
+endif()
+
+# Cross compiling on macOS. The cross compiling architecture should override
+# auto-detected system architecture settings.
+if(CMAKE_OSX_ARCHITECTURES)
+  if(CMAKE_OSX_ARCHITECTURES MATCHES "arm64")
+    set(ARCH "arm64")
+  elseif(CMAKE_OSX_ARCHITECTURES MATCHES "x86_64")
+    set(ARCH "x86_64")
+  else()
+    message(FATAL_ERROR "Architecture not currently ${CMAKE_OSX_ARCHITECTURES}")
+  endif()
+endif()
+
 option(BUILD_TESTS "build test code" ON)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -38,7 +58,7 @@ target_include_directories(essim PRIVATE
   ${CMAKE_SOURCE_DIR}
   )
 
-if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
+if(ARCH MATCHES "arm64")
   set_target_properties(essim PROPERTIES COMPILE_FLAGS "-fexceptions -Wall -Wpedantic -O3")
 else()
   set_property(SOURCE "essim/src/ssim_internal.x86.sse41.c" "essim/src/ssim_internal.x86.ssse3.c"  PROPERTY COMPILE_FLAGS "-mssse3 -msse4.1")
