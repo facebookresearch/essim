@@ -29,8 +29,8 @@ void print_help() {
   printf(" -wstride : Window stride for eSSIM (can be 4, 8, 16). Default is 4. "
          "\n");
   printf(" -mink : SSIM Minkowski pooling (can be 3 or 4). Default is 3. \n");
-  printf(" -mode : Can be 0 -> SSIM_MODE_REF, 1 -> SSIM_MODE_PERF_INT, 2 -> "
-         "SSIM_MODE_PERF_FLOAT. Default is 1 \n");
+  printf(" -mode : Can be 0 -> SSIM_MODE_REF, 1 -> SSIM_MODE_INT, 2 -> "
+         "SSIM_MODE_PERF. Default is 2 \n");
   printf("\n Example cmd : \t");
   printf(" -r /mnt/d/InpYuvPath/xyz.yuv -d /mnt/d/ReconYuvPath/abc.yuv -w 1280 "
          "-h 720 -bd 10 -wsize 16 -wstride 8 -mink 3\n");
@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
   uint32_t i = 1;
   std::string InpYuvPath = "NULL", ReconYuvPath = "NULL";
   uint32_t Width = 0, Height = 0, WSize = 8, WStride = 4;
-  uint32_t Mode = 1, BitDepth = 8, essim_mink_value = 3;
+  uint32_t Mode = 2, BitDepth = 8, essim_mink_value = 3;
   eSSIMMode ModeEnum;
 
   std::string output;
@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
         output = argv[++i];
         std::cerr << "Output: " << output << std::endl;
       } else {
-        std::cerr << "Unknow argument: " << argv[i] << std::endl;
+        std::cerr << "Unknown argument: " << argv[i] << std::endl;
         return 0;
       }
       i++;
