@@ -107,7 +107,6 @@ static const uint8_t lower_dword_mask[16] = {255, 255, 255, 255, 0, 0, 0, 0,
 
 enum { SWAP_MIDDLE_DWORD = 0xd8 };
 
-#if NEW_SIMD_FUNC
 void load_4x4_windows_10u_avx2(LOAD_4x4_WINDOWS_FORMAL_ARGS) {
   enum { PREFETCH = 160, WIN_CHUNK = 8, WIN_SIZE = 4 };
 
@@ -187,7 +186,6 @@ void load_4x4_windows_10u_avx2(LOAD_4x4_WINDOWS_FORMAL_ARGS) {
   }
 
 } /* void load_4x4_windows_10u_avx2(LOAD_4x4_WINDOWS_FORMAL_ARGS) */
-#endif
 
 void load_4x4_windows_16u_avx2(LOAD_4x4_WINDOWS_FORMAL_ARGS) {
   enum { PREFETCH = 160, WIN_CHUNK = 4, WIN_SIZE = 4 };
@@ -524,8 +522,6 @@ void sum_windows_12x4_float_8u_avx2(SUM_WINDOWS_FORMAL_ARGS) {
   }
 
 } /* void sum_windows_12x4_float_8u_avx2(SUM_WINDOWS_FORMAL_ARGS) */
-
-#if NEW_SIMD_FUNC
 
 void sum_windows_8x8_float_8u_avx2(SUM_WINDOWS_FORMAL_ARGS) {
   enum { WIN_CHUNK = 8, WIN_SIZE = 8 };
@@ -1909,6 +1905,5 @@ void sum_windows_16_int_10u_avx2(SUM_WINDOWS_FORMAL_ARGS) {
                              essim_mink_value);
   }
 }
-#endif
 
 #endif /* defined(_X86) || defined(_X64) */

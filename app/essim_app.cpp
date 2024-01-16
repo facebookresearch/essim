@@ -13,7 +13,6 @@
 #include <iostream>
 #include <iomanip>
 #include <memory>
-#include <numeric>
 #include <string>
 
 void print_help() {

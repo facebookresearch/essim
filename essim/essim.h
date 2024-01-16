@@ -8,8 +8,8 @@
 
 #pragma once
 
-#if !defined(__SSIM_SSIM_H)
-#define __SSIM_SSIM_H
+#if !defined(ESSIM_H)
+#define ESSIM_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -190,4 +190,4 @@ inline context_array_t AllocateCtxArray(
 
 #endif /* defined(__cplusplus) */
 
-#endif /* __SSIM_SSIM_H */
+#endif /* ESSIM_H */

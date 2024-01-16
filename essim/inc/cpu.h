@@ -8,8 +8,8 @@
 
 #pragma once
 
-#if !defined(__SSIM_CPU_H)
-#define __SSIM_CPU_H
+#if !defined(ESSIM_CPU_H)
+#define ESSIM_CPU_H
 
 #include <essim/inc/xplatform.h>
 
@@ -37,7 +37,7 @@ typedef enum eCPUType {
   cpu_avx512bw = (1 << 10) | cpu_avx512f,
   cpu_avx512bwdq = cpu_avx512bw | cpu_avx512dq
 
-#elif defined(_ARM) || defined(_ARM64)
+#elif defined(__ARM_NEON)
 
   cpu_neon = (1 << 0),
 
@@ -53,4 +53,4 @@ void SetCpuType(const eCPUType cpuType);
 } // extern "C"
 #endif /* defined(__cplusplus) */
 
-#endif /* !defined(__SSIM_CPU_H) */
+#endif /* !defined(ESSIM_CPU_H) */

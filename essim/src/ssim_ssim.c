@@ -270,7 +270,6 @@ ssim_allocate_ctx_array(const size_t numCtx, const uint32_t width,
         p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                          ? (sum_windows_8x4_int_8u)
                                          : (sum_windows_8x4_float_8u);
-#if NEW_SIMD_FUNC
       } else if ((8 == windowSize) && (8 == windowStride)) {
         p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                          ? (sum_windows_8x8_int_8u)
@@ -287,7 +286,6 @@ ssim_allocate_ctx_array(const size_t numCtx, const uint32_t width,
         p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                          ? (sum_windows_16x16_int_8u)
                                          : (sum_windows_16x16_float_8u);
-#endif
       } else if ((12 == windowSize) && (4 == windowStride)) {
         p->params.sum_windows_proc = (SSIM_MODE_INT == mode)
                                          ? (sum_windows_12x4_int_8u)
@@ -297,7 +295,6 @@ ssim_allocate_ctx_array(const size_t numCtx, const uint32_t width,
                                          ? (sum_windows_int_8u)
                                          : (sum_windows_float_8u);
       }
-#if NEW_SIMD_FUNC
     } else if (bitDepthMinus8 == 2) {
       p->params.load_4x4_windows_proc = load_4x4_windows_10u;
       if ((8 == windowSize) && (4 == windowStride)) {
@@ -321,7 +318,6 @@ ssim_allocate_ctx_array(const size_t numCtx, const uint32_t width,
                                          ? (sum_windows_16x16_int_10u)
                                          : (sum_windows_16x16_float_10u);
       }
-#endif
     } else {
     p->params.load_4x4_windows_proc = load_4x4_windows_16u;
     p->params.sum_windows_proc = (SSIM_MODE_INT == mode)

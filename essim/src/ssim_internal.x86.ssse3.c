@@ -582,8 +582,6 @@ void sum_windows_12x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS) {
 
 } /* void sum_windows_12x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS) */
 
-#if NEW_SIMD_FUNC
-
 #define ASM_LOAD_16X16_WINDOW_8_FLOAT_VALUES_SSSE3(value0, value1, idx)        \
   {                                                                            \
     __m128i _r0, _r1;                                                          \
@@ -678,7 +676,5 @@ void sum_windows_16x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS) {
   }
 
 } /* void sum_windows_16x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS) */
-
-#endif
 
 #endif /* defined(_X86) || defined(_X64) */

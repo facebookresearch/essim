@@ -8,8 +8,8 @@
 
 #pragma once
 
-#if !defined(__SSIM_SSIM_INTERNAL_H)
-#define __SSIM_SSIM_INTERNAL_H
+#if !defined(ESSIM_INTERNAL_H)
+#define ESSIM_INTERNAL_H
 
 #include <essim/inc/xplatform.h>
 #include <essim/essim.h>
@@ -28,9 +28,6 @@ enum { LOG2_ALIGN = 6, ALIGN = 1 << LOG2_ALIGN };
 
 #define INTR_PROFILING_PRINTS 0
 #define ENABLE_ONLY_C_PATH 0
-#define ARM_BUILD_FIXES 1
-#define NEW_SIMD_FUNC 1
-#define NEW_10BIT_C_FUNC 1
 
 /*Max WxH eSSSIM can support*/
 #define MAX_FRAME_WIDTH 7680
@@ -48,10 +45,9 @@ Based on above cases, we consider SSIM_ACCUMULATED_SUM maximum value can be
 
 #define div_Q_factor 1073741824  //2^30
 
-#if NEW_SIMD_FUNC
 #define MSB 4294901760 //2^32-2^16
 #define LSB 65535 //2^16
-#endif
+
 /*Max WxH = 3840x2160
   Max WindowSize = 16x16
   Min windowStride = 4
@@ -280,11 +276,11 @@ eSSIMResult ssim_compute_perf(SSIM_CTX *const ctx, const void *ref,
 */
 
 void load_4x4_windows_8u(LOAD_4x4_WINDOWS_FORMAL_ARGS);
+void load_4x4_windows_10u(LOAD_4x4_WINDOWS_FORMAL_ARGS);
+
 void sum_windows_int_8u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_8x4_int_8u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_12x4_int_8u(SUM_WINDOWS_FORMAL_ARGS);
-#if NEW_SIMD_FUNC
-void load_4x4_windows_10u(LOAD_4x4_WINDOWS_FORMAL_ARGS);
 
 void sum_windows_8x8_int_8u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x4_int_8u(SUM_WINDOWS_FORMAL_ARGS);
@@ -308,7 +304,7 @@ void sum_windows_8x8_float_10u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x4_float_10u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x8_float_10u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x16_float_10u(SUM_WINDOWS_FORMAL_ARGS);
-#endif
+
 void sum_windows_float_8u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_8x4_float_8u(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_12x4_float_8u(SUM_WINDOWS_FORMAL_ARGS);
@@ -326,7 +322,6 @@ void sum_windows_int_8u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_8x4_int_8u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_12x4_int_8u_c(SUM_WINDOWS_FORMAL_ARGS);
 
-#if NEW_10BIT_C_FUNC
 void load_4x4_windows_10u_c(LOAD_4x4_WINDOWS_FORMAL_ARGS);
 
 void sum_windows_int_10u_c(SUM_WINDOWS_FORMAL_ARGS);
@@ -335,9 +330,7 @@ void sum_windows_8x8_int_10u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x4_int_10u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x8_int_10u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x16_int_10u_c(SUM_WINDOWS_FORMAL_ARGS);
-#endif
 
-#if NEW_SIMD_FUNC
 void sum_windows_8x8_int_8u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x4_int_8u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x8_int_8u_c(SUM_WINDOWS_FORMAL_ARGS);
@@ -353,7 +346,7 @@ void sum_windows_8x8_float_10u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x4_float_10u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x8_float_10u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x16_float_10u_c(SUM_WINDOWS_FORMAL_ARGS);
-#endif
+
 void sum_windows_float_8u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_8x4_float_8u_c(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_12x4_float_8u_c(SUM_WINDOWS_FORMAL_ARGS);
@@ -377,7 +370,6 @@ void load_4x4_windows_16u_avx2(LOAD_4x4_WINDOWS_FORMAL_ARGS);
 void sum_windows_8x4_int_8u_sse41(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_12x4_int_8u_sse41(SUM_WINDOWS_FORMAL_ARGS);
 
-#if NEW_SIMD_FUNC
 void load_4x4_windows_10u_avx2(LOAD_4x4_WINDOWS_FORMAL_ARGS);
 
 void sum_windows_8x4_int_8u_avx2(SUM_WINDOWS_FORMAL_ARGS);
@@ -404,14 +396,13 @@ void sum_windows_8x8_float_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x4_float_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x8_float_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x16_float_10u_avx2(SUM_WINDOWS_FORMAL_ARGS);
-#endif
 
 void sum_windows_8x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_8x4_float_8u_avx2(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_12x4_float_8u_ssse3(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_12x4_float_8u_avx2(SUM_WINDOWS_FORMAL_ARGS);
 
-#elif defined(_ARM) || defined(_ARM64)
+#elif defined(__ARM_NEON)
 
 void load_4x4_windows_8u_neon(LOAD_4x4_WINDOWS_FORMAL_ARGS);
 void load_4x4_windows_16u_neon(LOAD_4x4_WINDOWS_FORMAL_ARGS);
@@ -419,7 +410,6 @@ void load_4x4_windows_16u_neon(LOAD_4x4_WINDOWS_FORMAL_ARGS);
 void sum_windows_8x4_int_8u_neon(SUM_WINDOWS_FORMAL_ARGS);
 
 void sum_windows_8x4_float_8u_neon(SUM_WINDOWS_FORMAL_ARGS);
-#if NEW_SIMD_FUNC
 void load_4x4_windows_10u_neon(LOAD_4x4_WINDOWS_FORMAL_ARGS);
 
 void sum_windows_8x8_int_8u_neon(SUM_WINDOWS_FORMAL_ARGS);
@@ -447,7 +437,6 @@ void sum_windows_16_float_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x4_float_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x8_float_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
 void sum_windows_16x16_float_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
-#endif
 
 #endif /* defined(_X86) || defined(_X64) */
 
@@ -455,4 +444,4 @@ void sum_windows_16x16_float_10u_neon(SUM_WINDOWS_FORMAL_ARGS);
 } // extern "C"
 #endif /* defined(__cplusplus) */
 
-#endif /* !defined(__SSIM_SSIM_INTERNAL_H) */
+#endif /* !defined(ESSIM_INTERNAL_H) */

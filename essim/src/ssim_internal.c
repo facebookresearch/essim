@@ -299,7 +299,6 @@ void load_4x4_windows_8u_c(LOAD_4x4_WINDOWS_FORMAL_ARGS) {
 
 } /* void load_4x4_windows_8u_c(LOAD_4x4_WINDOWS_FORMAL_ARGS) */
 
-#if NEW_10BIT_C_FUNC
 void load_4x4_windows_10u_c(LOAD_4x4_WINDOWS_FORMAL_ARGS) {
   enum { WIN_SIZE = 4 };
 
@@ -343,7 +342,6 @@ void load_4x4_windows_10u_c(LOAD_4x4_WINDOWS_FORMAL_ARGS) {
   }
 
 } /* void load_4x4_windows_10u_c(LOAD_4x4_WINDOWS_FORMAL_ARGS) */
-#endif
 
 void load_4x4_windows_16u_c(LOAD_4x4_WINDOWS_FORMAL_ARGS) {
   enum { WIN_SIZE = 4 };
@@ -466,7 +464,6 @@ void sum_windows_12x4_int_8u_c(SUM_WINDOWS_FORMAL_ARGS) {
   sum_windows_int_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
 }
 
-#if NEW_SIMD_FUNC
 void sum_windows_8x8_int_8u_c(SUM_WINDOWS_FORMAL_ARGS) {
   sum_windows_int_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
 }
@@ -479,7 +476,6 @@ void sum_windows_16x8_int_8u_c(SUM_WINDOWS_FORMAL_ARGS) {
 void sum_windows_16x16_int_8u_c(SUM_WINDOWS_FORMAL_ARGS) {
   sum_windows_int_8u_c(SUM_WINDOWS_ACTUAL_ARGS);
 }
-#if NEW_10BIT_C_FUNC
 void sum_windows_8x4_int_10u_c(SUM_WINDOWS_FORMAL_ARGS) {
   sum_windows_int_10u_c(SUM_WINDOWS_ACTUAL_ARGS);
 }
@@ -562,9 +558,8 @@ void sum_windows_int_10u_c(SUM_WINDOWS_FORMAL_ARGS) {
   res->numWindows += numWindows;
 
 } /* void sum_windows_int_10u_c(SUM_WINDOWS_FORMAL_ARGS) */
-#endif
 
-#endif
+
 void sum_windows_int_16u_c(SUM_WINDOWS_FORMAL_ARGS) {
   const uint32_t windowSizeDiv4 = windowSize / 4;
 

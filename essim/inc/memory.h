@@ -8,8 +8,8 @@
 
 #pragma once
 
-#if !defined(__SSIM_MEMORY_H)
-#define __SSIM_MEMORY_H
+#if !defined(ESSIM_MEMORY_H)
+#define ESSIM_MEMORY_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -26,4 +26,4 @@ void ssim_free_aligned(void* p);
 } // extern "C"
 #endif /* defined(__cplusplus) */
 
-#endif /* !defined(__SSIM_MEMORY_H) */
+#endif /* !defined(ESSIM_MEMORY_H) */

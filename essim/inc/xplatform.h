@@ -8,8 +8,8 @@
 
 #pragma once
 
-#if !defined(__SSIM_XPLATFORM_H)
-#define __SSIM_XPLATFORM_H
+#if !defined(ESSIM_XPLATFORM_H)
+#define ESSIM_XPLATFORM_H
 
 /* define the OS identifier */
 #if defined(_WIN32) || defined(_WIN64)
@@ -63,4 +63,4 @@
 
 #endif /* CPU platform */
 
-#endif /* !defined(__SSIM_XPLATFORM_H) */
+#endif /* !defined(ESSIM_XPLATFORM_H) */

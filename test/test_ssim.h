@@ -12,7 +12,6 @@
 #include <essim/inc/memory.h>
 #include <essim/inc/xplatform.h>
 
-#define BUG_FIX 1
 #define EXTENDED_TESTING 0
 
 namespace ssim {
